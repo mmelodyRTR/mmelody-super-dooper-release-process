@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/mmelodyRTR/mmelody-super-dooper-release-process/compare/v1.0.0...v1.1.0) (2025-03-12)
+
+
+### Features
+
+* add reusable workflows ([a5cb563](https://github.com/mmelodyRTR/mmelody-super-dooper-release-process/commit/a5cb563b4e141332af4d9ce1140d4a986b039bf6))
+
+
+### Bug Fixes
+
+* Enable reusable workflows to be called downstream ([a063a7e](https://github.com/mmelodyRTR/mmelody-super-dooper-release-process/commit/a063a7e500ebe6e744e068753af643b5c9ba2189))
+
 ## 1.0.0 (2025-03-12)
 
 
