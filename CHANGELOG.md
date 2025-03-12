@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/mmelodyRTR/mmelody-super-dooper-release-process/compare/v1.1.0...v1.2.0) (2025-03-12)
+
+
+### Features
+
+* Output success on maven build ([d4aedbe](https://github.com/mmelodyRTR/mmelody-super-dooper-release-process/commit/d4aedbe3f6408a522263e9d92cf132bd46ade0cd))
+
 ## [1.1.0](https://github.com/mmelodyRTR/mmelody-super-dooper-release-process/compare/v1.0.0...v1.1.0) (2025-03-12)
 
 
