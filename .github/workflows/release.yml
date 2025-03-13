@@ -8,7 +8,7 @@ on:
       release-please-config-file:
         required: false
         type: string
-        default: '.github/release-please/release-please-config.json'
+        default: '.github/workflows/release-please/release-please-config.json'
       reset-release-properties:
         required: false
         type: boolean
