@@ -1,18 +1,66 @@
 on:
   workflow_call:
-
-permissions:
-  contents: write
-  pull-requests: write
-
-name: release-please
-
+    inputs:
+      release-type:
+        required: false
+        type: string
+        default: 'maven'
+      release-please-config-file:
+        required: false
+        type: string
+        default: '.github/release-please/release-please-config.json'
+      reset-release-properties:
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      github-token:
+        description: 'A token to be used for GitHub API requests'
+        required: false
+      
+name: Run Release Please
 jobs:
   release-please:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, default]
+    outputs:
+      release: ${{ steps.version.outputs.release }}
     steps:
-      - uses: googleapis/release-please-action@v4
+      - name: Release Please
+        id: release
+        uses: googleapis/release-please-action@v4
         with:
-          token: ${{ secrets.FINE_GRAINED_PAT }}
-          release-type: 'maven'
-          config-file: .github/release-please/release-please-config.json
+          token: ${{ secrets.github-token }}
+          config-file: ${{ inputs.release-please-config-file }}
+
+  reset-custom-properties:
+      name: Reset Release Candidate number and Allow Merge
+      if: "contains(github.event.pull_request.title, 'chore(main): release') && ${{ inputs.reset-release-properties }}"
+      runs-on: [self-hosted, default]
+      steps:
+        - name: Reset Release Candidate number
+          run: |
+            curl -L \
+            -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.github_token }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/RentTheRunway/$GITHUB_REPOSITORY/properties/values \
+            -d '{"properties":[{"property_name":"release-candidate","value":"0"}]}'
+        - name: Reset Release Candidate number
+          run: |
+            curl -L \
+            -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.github_token }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/RentTheRunway/$GITHUB_REPOSITORY/properties/values \
+            -d '{"properties":[{"property_name":"allow-merge","value":"true"}]}'
+        - name: Reset Allow Merge property
+          run:  |
+            curl -L \
+            -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.github-token }}" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/RentTheRunway/$GITHUB_REPOSITORY/properties/values \
+            -d '{"properties":[{"property_name":"allow-merge","value":"true"}]}'
