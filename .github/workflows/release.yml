@@ -21,7 +21,7 @@ on:
 name: Run Release Please
 jobs:
   release-please:
-    runs-on: [self-hosted, default]
+    runs-on: ubuntu-latest
     outputs:
       release: ${{ steps.version.outputs.release }}
     steps:
@@ -34,8 +34,8 @@ jobs:
 
   reset-custom-properties:
       name: Reset Release Candidate number and Allow Merge
-      if: "contains(github.event.pull_request.title, 'chore(main): release') && ${{ inputs.reset-release-properties }}"
-      runs-on: [self-hosted, default]
+      if: "contains(github.event.pull_request.title, 'chore(main): release') && ${{ inputs.reset-release-properties == false }}"
+      runs-on: ubuntu-latest
       steps:
         - name: Reset Release Candidate number
           run: |
