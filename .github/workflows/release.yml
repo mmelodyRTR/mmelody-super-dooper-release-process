@@ -12,7 +12,7 @@ on:
       reset-release-properties:
         required: false
         type: boolean
-        default: false
+        default: true
     secrets:
       github-token:
         description: 'A token to be used for GitHub API requests'
@@ -22,19 +22,18 @@ name: Run Release Please
 jobs:
   release-please:
     runs-on: ubuntu-latest
-    outputs:
-      release: ${{ steps.version.outputs.release }}
     steps:
       - name: Release Please
         id: release
         uses: googleapis/release-please-action@v4
         with:
+          release-type: ${{ inputs.release-type }}
           token: ${{ secrets.github-token }}
           config-file: ${{ inputs.release-please-config-file }}
 
   reset-custom-properties:
       name: Reset Release Candidate number and Allow Merge
-      if: "contains(github.event.pull_request.title, 'chore(main): release') && ${{ inputs.reset-release-properties == false }}"
+      if: "contains(github.event.pull_request.title, 'chore(main): release') && ${{ inputs.reset-release-properties == true }}"
       runs-on: ubuntu-latest
       steps:
         - name: Reset Release Candidate number
